@@ -1048,6 +1048,16 @@ function initThread(){
   const h = Math.max(homeEl.scrollHeight - 60, 400);
   threadWrap.style.height = h + "px";
 }
+
+(function () {
+  const statementText = "See more work below!";
+  const el = document.getElementById("statement");
+  if (!el) return;
+  el.innerHTML = statementText.split(" ").map((w, i) =>
+    `<span class="word" style="transition-delay:${(i * 0.04).toFixed(2)}s">${w}</span>`
+  ).join(" ");
+})();
+  
 function updateThread(){
   if (!pathLen) return;
   const homeEl = document.getElementById("view-home");
