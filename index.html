@@ -628,11 +628,11 @@
     <div class="hero-top">
       <div class="hero-text">
         <h1 class="hero-name" id="heroName"></h1>
-        <p class="hero-role">Graphic &amp; interaction designer working across print, identity and web — I build quiet systems for loud ideas.</p>
+        <p class="hero-role">Graphic &amp; interaction designer working across UI, identity and web</p>
         <div class="hero-meta">
-          <div><b>Based in</b>CT and NY</div>
+          <div><b>Based in</b>CT, open to relocate </div>
           <div><b>Focus</b>UI · UX · Product</div>
-          <div><b>Status</b>Open to work, 2026</div>
+          <div><b>Status</b>Habits365Greek Intern</div>
         </div>
       </div>
       <!-- ✎ EDIT HERE: replace the src below with a real photo of you.
@@ -675,8 +675,8 @@
                [ your school / program ] are placeholders, just delete
                the brackets and type over them. Add more <p> lines if
                you want a longer bio. -->
-          <p>I'm a designer who likes problems that don't have an obvious shape yet — new products, rebrands, motion, etc.</p>
-          <p>Before this I studied New Media Design at RIT, and worked with teams at Habits365Greek.</p>
+          <p>I'm a designer who likes problems that don't have an obvious shape yet</p>
+          <p>I am studying New Media Design at RIT, and working with teams at Habits365Greek.</p>
         </div>
         <dl class="about-facts">
           <!-- ✎ EDIT: quick facts — each fact is one <dt> (the label)
@@ -684,7 +684,7 @@
                the tags; add or remove a <dt>/<dd> pair for more or
                fewer facts. -->
           <dt>Tools</dt><dd>Figma, After Effects, Framer, Illustrator, Photoshop</dd>
-          <dt>Currently</dt><dd>Freelance + Open to full-time</dd>
+          <dt>Currently</dt><dd>Intern fall 25' to spring 26'</dd>
         </dl>
       </div>
     </div>
@@ -719,7 +719,7 @@
     <!-- heading sits as a direct child of the section (not .wrap) so its
          left edge lines up with the full-bleed carousel below it, both
          inset by the same --gutter from the true page edge -->
-    <p class="eyebrow" style="margin-bottom:30px;">Selected work</p>
+    <p class="eyebrow" style="margin-bottom:30px;">Showcased work</p>
     <div class="full-bleed"><div class="work-strip" id="workStrip"></div></div>
     <div class="reel-nav">
       <button class="reel-nav-btn" id="workPrev" aria-label="Previous work">←</button>
@@ -751,7 +751,7 @@
     <!-- heading sits as a direct child of the section (not .wrap) so its
          left edge lines up with the full-bleed carousel below it, both
          inset by the same --gutter from the true page edge -->
-    <p class="eyebrow">Reel</p>
+    <p class="eyebrow">Reels to showcase light motion work</p>
     <div class="full-bleed"><div class="reel-track" id="reelTrack"></div></div>
     <div class="reel-nav">
       <button class="reel-nav-btn" id="reelPrev" aria-label="Previous video">←</button>
@@ -803,7 +803,7 @@
       <div class="sticker" style="width:40px;top:130px;left:-10px;--rot:-16deg;"><img src="sticker-cv.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="sticker-fallback">cv</span></div>
       <div class="resume-head reveal">
         <h1>Résumé</h1>
-        <button class="btn-outline" onclick="window.print()">Download / Print PDF</button>
+        <button class="btn-outline" onclick="window.print()">Download PDF</button>
       </div>
 
       <div class="resume-block reveal">
@@ -895,7 +895,7 @@
       arasimolivia@gmail.com
       <svg class="arrow" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <p class="c-sub">Currently based in CT. Usually replies within a couple of days.</p>
+    <p class="c-sub">Currently based in CT nut open to relocation. Usually replies within a couple of days.</p>
     <div class="c-socials">
       <!-- ✎ EDIT: your real links — replace each href="#" with your
            actual profile URL (e.g. href="https://instagram.com/you"),
@@ -1066,25 +1066,7 @@ if (document.fonts && document.fonts.ready) { document.fonts.ready.then(() => { 
 initThread();
 updateThread();
 
-(function () {
-  const statementText = "See more work below!";
-  const el = document.getElementById("statement");
-  if (!el) return;
-  el.innerHTML = statementText.split(" ").map((w, i) =>
-    `<span class="word" style="transition-delay:${(i * 0.04).toFixed(2)}s">${w}</span>`
-  ).join(" ");
-})();
-
 const projects = [
- {
-    image: "TheCute.png",
-    num: "01",
-    title: "The Picnic",
-    tags: ["3D", "Low-Poly"],
-    summary: "A low poly style cute picnic scene",
-    body: "A cute scene created to make you feel joy! Took many hours to render, but was worth it for the awww.",
-    process: ["angle2.png"]
-  },
   {
     image: "homesearch.png",
     num: "02",
@@ -1093,15 +1075,6 @@ const projects = [
     summary: "Created a system based on a physical version",
     body: "The Reserve Section is a very important section used by faculty to provide material for students. It is complex to use, which is why I took on app-ifying it to ease accessibilty for patrons. Using RIT's branding and colors it was designed to fit both their image as well as technological needs. ",
     process: ["itempage.png", "addforfaculty.png", "seeallpage.png"]
-  },
-  {
-    image: "P2FinalVisualCompOp2.png",
-    num: "03",
-    title: "Drake Vs. Kendrick Game",
-    tags: ["Product", "UI"],
-    summary: "A game based on Drake and Kendrick Lamars beef",
-    body: "A game made to explore Drake and Kendricks public beef, centered around the idea of being displayed at the new Rap Hall of Fame planned for Brookyln. Scenes show their houses, diss tracks, background, etc.",
-    process: ["P2FinalVisualCompD2.png", "pixelhouse.png", "pixeldrake.png"]
   },
   {
     image: "medapp.png",
@@ -1121,6 +1094,15 @@ const projects = [
     body: "The rebrand features a new logo as well as a new menu based around their Easter catalogue.",
     process: ["hedonistmenu.jpg", "hedonistletterhead.png"]
   }
+  {
+    image: "P2FinalVisualCompOp2.png",
+    num: "03",
+    title: "Drake Vs. Kendrick Game",
+    tags: ["Product", "UI"],
+    summary: "A game based on Drake and Kendrick Lamars beef",
+    body: "A game made to explore Drake and Kendricks public beef, centered around the idea of being displayed at the new Rap Hall of Fame planned for Brookyln. Scenes show their houses, diss tracks, background, etc.",
+    process: ["P2FinalVisualCompD2.png", "pixelhouse.png", "pixeldrake.png"]
+  },
 ];
 
 /* =========================================================
