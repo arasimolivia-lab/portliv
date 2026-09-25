@@ -26,6 +26,9 @@
     --grotesk: "Space Grotesk", var(--helvetica);
     --maxw: 1180px;
     --gutter: clamp(20px, 6vw, 112px);
+    /* consistent gap for any left/right column split — keeps the hero
+       text/image and any other side-by-side blocks sharing one width */
+    --col-gutter: clamp(24px, 5vw, 80px);
     --grid-cols: 12;
     --grid-gutter: 20px;
     --nav-h: 56px;
@@ -144,7 +147,10 @@
      SHARED SECTION LAYOUT
      ========================================================= */
   section{ position:relative; padding:clamp(36px,5vw,80px) var(--gutter); }
-  .wrap{ max-width:var(--maxw); margin:0 auto; position:relative; }
+  /* width:100% (not max-width + centered) so .wrap always touches the
+     same --gutter edge as the nav, headings, and full-bleed elements —
+     no drift toward the center at wide viewports or when zoomed out */
+  .wrap{ width:100%; position:relative; }
   /* =========================================================
      GRID GUIDES — a faint 12-column overlay, desktop only,
      referencing the "show the grid" inspo. Purely decorative:
@@ -439,10 +445,9 @@
   }
   .info-close:hover{ background:var(--paper); color:var(--neon); }
   .info-hero{
-    padding:clamp(90px,10vw,120px) var(--gutter) clamp(30px,4vw,50px);
+    padding:clamp(90px,10vw,120px) var(--gutter) 0;
   }
   .info-num{ font-size:13px; opacity:.8; letter-spacing:.06em; text-transform:uppercase; }
-  .info-title{ font-family:var(--serif); font-size:clamp(36px,6.5vw,72px); margin-top:10px; line-height:1.02; max-width:18ch; }
   .info-tags{ display:flex; gap:8px; margin-top:20px; flex-wrap:wrap; }
   .info-tags span{ font-size:12.5px; border:1px solid rgba(255,255,255,.5); padding:6px 14px; border-radius:100px; }
   .info-meta-row{
@@ -452,40 +457,54 @@
   }
   .info-meta-row dt{ font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; opacity:.75; }
   .info-meta-row dd{ margin:5px 0 0; font-size:14.5px; font-weight:600; }
-  .info-cover{ margin-top:36px; border-radius:6px; overflow:hidden; background:rgba(17,17,16,0.15); }
-  .info-cover img{ width:100%; max-height:70vh; object-fit:cover; display:block; }
-  .info-cover .placeholder{
-    aspect-ratio:16/9; border:1.5px dashed rgba(255,255,255,.5);
-    display:flex; align-items:center; justify-content:center; text-align:center;
-    font-family:var(--helvetica); font-size:13px; opacity:.85; padding:20px;
+  /* masthead row: big title + full intro paragraph on the left, a
+     stacked/tilted cover image on the right — like a magazine spread */
+  .info-hero-flex{ display:flex; gap:clamp(28px,5vw,56px); align-items:flex-start; flex-wrap:wrap-reverse; margin-top:10px; }
+  .info-hero-text{ flex:2; min-width:280px; }
+  .info-title{ font-family:var(--serif); font-size:clamp(34px,5.6vw,62px); line-height:1.02; max-width:16ch; }
+  /* the full brief, unabridged — this is the same copy shown truncated
+     in the hover/tap preview, but here it's shown in full */
+  .info-intro{
+    font-family:var(--helvetica); font-size:clamp(16px,1.7vw,18.5px); line-height:1.75;
+    margin-top:18px; max-width:62ch;
   }
+  .info-hero-image{
+    flex:1; min-width:150px; max-width:260px; margin-left:auto; cursor:zoom-in;
+  }
+  .info-hero-image img{
+    width:100%; display:block; border-radius:6px; border:3px solid var(--paper);
+    transform:rotate(-3deg); box-shadow:9px 11px 0 rgba(17,17,16,0.35);
+  }
+  /* punchy one-line takeaway, styled like the site's own italic
+     statement callouts — stands in for a highlighted headline */
+  .info-highlight{
+    font-family:var(--serif); font-style:italic; font-weight:450;
+    font-size:clamp(21px,3.1vw,32px); line-height:1.35; max-width:24ch;
+    margin-top:clamp(28px,4.5vw,46px); padding-top:clamp(22px,3.5vw,32px);
+    border-top:1px solid rgba(255,255,255,.3);
+  }
+  /* three fixed write-up boxes — Goals / Process / What I'd Change —
+     each can carry its own little photo grid right underneath it, so
+     images sit next to the text they actually illustrate */
   .info-sections{
-    padding:0 var(--gutter); margin-top:clamp(30px,5vw,56px);
-    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:clamp(30px,5vw,70px);
+    padding:0 var(--gutter); margin-top:clamp(34px,5.5vw,60px);
+    display:grid; grid-template-columns:1fr; gap:clamp(30px,4.5vw,48px);
+    font-family:var(--helvetica);
   }
-  @media (max-width:820px){ .info-sections{ grid-template-columns:1fr; } }
-  .info-toc{ font-family:var(--helvetica); }
-  .info-toc-item{ padding:14px 0; border-top:1px solid rgba(255,255,255,.22); font-size:13px; }
-  .info-toc-item:first-child{ border-top:none; }
-  .info-toc-item b{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.08em; opacity:.7; margin-bottom:5px; font-weight:700; }
-  .info-body-col{ font-family:var(--helvetica); }
-  .info-block + .info-block{ margin-top:clamp(28px,4vw,48px); }
-  .info-block-label{ font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; opacity:.85; margin-bottom:12px; }
-  .info-body{ font-size:16.5px; line-height:1.75; }
-  .info-process-label{ font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; opacity:.85; margin-top:0; }
-  .info-process{
-    padding:0 var(--gutter); margin-top:clamp(20px,4vw,40px);
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:22px;
+  .info-block{ padding-top:24px; border-top:1px solid rgba(255,255,255,.24); }
+  .info-block-label{ font-size:12.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; opacity:.85; margin-bottom:12px; }
+  .info-body{ font-size:16px; line-height:1.75; max-width:70ch; }
+  .info-block-images{
+    margin-top:18px;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px;
   }
-  .info-process figure{ margin:0; }
-  .info-process img{ width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:6px; display:block; }
-  .info-process figcaption{
-    font-family:var(--helvetica); font-size:13px; line-height:1.4; margin-top:9px; opacity:.9;
+  .info-block-images img{
+    width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:6px; display:block; cursor:zoom-in;
   }
-  .info-process .placeholder{
+  .info-block-images .placeholder{
     aspect-ratio:4/3; border:1.5px dashed rgba(255,255,255,.6); border-radius:6px;
     display:flex; align-items:center; justify-content:center; text-align:center; padding:8px;
-    font-family:var(--helvetica); font-size:11.5px; opacity:.9;
+    font-family:var(--helvetica); font-size:11px; opacity:.9;
   }
   .info-nav-footer{
     padding:clamp(40px,6vw,70px) var(--gutter) 0; margin-top:clamp(40px,6vw,70px);
@@ -499,6 +518,27 @@
     padding:11px 22px; transition:background .2s ease, color .2s ease;
   }
   .info-nav-footer button:hover{ background:var(--paper); color:var(--neon); border-color:var(--paper); }
+
+  /* =========================================================
+     IMAGE LIGHTBOX — click any photo in the popup (cover shot or a
+     section's little photos) to see it full-size.
+     ========================================================= */
+  .img-lightbox{
+    position:fixed; inset:0; z-index:900; display:flex; align-items:center; justify-content:center;
+    padding:24px; opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .img-lightbox.open{ opacity:1; pointer-events:auto; }
+  .img-lightbox-bg{ position:absolute; inset:0; background:rgba(17,17,16,0.9); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  .img-lightbox img{
+    position:relative; max-width:100%; max-height:88vh; border-radius:6px;
+    transform:scale(.96); opacity:0; transition:transform .3s cubic-bezier(.2,.8,.2,1), opacity .25s ease;
+  }
+  .img-lightbox.open img{ transform:scale(1); opacity:1; }
+  .img-lightbox-close{
+    position:absolute; top:22px; right:22px; z-index:2; width:42px; height:42px; border-radius:50%;
+    border:2px solid #fff; background:transparent; color:#fff; font-size:18px; line-height:1; cursor:pointer;
+  }
+  .img-lightbox-close:hover{ background:#fff; color:var(--ink); }
 
   /* =========================================================
      CONTACT — animated mailto-style links
@@ -746,16 +786,6 @@
 
 
   <!-- ============================================================
-       STATEMENT — a short line between About and Work, with each
-       word fading/rising into place as it scrolls into view.
-       ✎ EDIT: swap the sentence below for your own.
-       ============================================================ -->
-  <section class="statement-wrap reveal">
-    <p class="statement" id="statement"></p>
-  </section>
-
-
-  <!-- ============================================================
        WORK — hover/click-expand carousel. Click a panel to open
        a popup with the full project write-up.
        ✎ EDIT HERE: edit the `projects` array near the bottom of
@@ -836,19 +866,40 @@
 
       <div class="info-hero">
         <p class="info-num" id="infoNum"></p>
-        <h3 class="info-title" id="infoTitle"></h3>
-        <div class="info-tags" id="infoTags"></div>
+        <div class="info-hero-flex">
+          <div class="info-hero-text">
+            <h3 class="info-title" id="infoTitle"></h3>
+            <div class="info-tags" id="infoTags"></div>
+            <p class="info-intro" id="infoIntro"></p>
+            <p class="info-highlight" id="infoHighlight" style="display:none;"></p>
+          </div>
+          <div class="info-hero-image" id="infoHeroImage" style="display:none;"></div>
+        </div>
         <dl class="info-meta-row" id="infoMetaRow"></dl>
-        <div class="info-cover" id="infoCover" style="display:none;"></div>
       </div>
 
-      <div class="info-sections">
-        <div class="info-toc" id="infoToc"></div>
-        <div class="info-body-col" id="infoBodyCol"></div>
+      <!-- ✎ EDIT: every project now writes up three fixed boxes — Goals,
+           Process, and What I'd Change — each with its own optional
+           photo grid right underneath. Fill in `goals`/`goalsImages`,
+           `processText`/`processImages` and `changeText`/`changeImages`
+           on a project in the data below to populate these. -->
+      <div class="info-sections" id="infoSections">
+        <div class="info-block" id="infoGoalsBlock" style="display:none;">
+          <p class="info-block-label">Goals</p>
+          <p class="info-body" id="infoGoalsText"></p>
+          <div class="info-block-images" id="infoGoalsImages"></div>
+        </div>
+        <div class="info-block" id="infoProcessBlock" style="display:none;">
+          <p class="info-block-label">Process</p>
+          <p class="info-body" id="infoProcessText"></p>
+          <div class="info-block-images" id="infoProcessImages"></div>
+        </div>
+        <div class="info-block" id="infoChangeBlock" style="display:none;">
+          <p class="info-block-label">What I'd add or change</p>
+          <p class="info-body" id="infoChangeText"></p>
+          <div class="info-block-images" id="infoChangeImages"></div>
+        </div>
       </div>
-
-      <p class="info-process-label" id="infoProcessLabel" style="display:none; padding:0 var(--gutter); margin-top:clamp(30px,5vw,56px);">Process &amp; making-of</p>
-      <div class="info-process" id="infoProcess"></div>
 
       <div class="info-nav-footer">
         <button type="button" id="infoPrev">← Previous project</button>
@@ -858,6 +909,15 @@
     </div>
   </div>
 </div>
+
+<!-- click any photo in the popup (cover shot or a section's little
+     photos) to see it full-size -->
+<div class="img-lightbox" id="imgLightbox">
+  <div class="img-lightbox-bg"></div>
+  <button class="img-lightbox-close" id="imgLightboxClose" aria-label="Close">✕</button>
+  <img id="imgLightboxImg" src="" alt="">
+</div>
+
 
 <!-- =====================================================
      RESUME VIEW  (Helvetica-set)
@@ -1119,15 +1179,6 @@ function initThread(){
   threadWrap.style.height = h + "px";
 }
 
-(function () {
-  const statementText = "See more work below!";
-  const el = document.getElementById("statement");
-  if (!el) return;
-  el.innerHTML = statementText.split(" ").map((w, i) =>
-    `<span class="word" style="transition-delay:${(i * 0.04).toFixed(2)}s">${w}</span>`
-  ).join(" ");
-})();
-  
 function updateThread(){
   if (!pathLen) return;
   const homeEl = document.getElementById("view-home");
@@ -1146,16 +1197,14 @@ if (document.fonts && document.fonts.ready) { document.fonts.ready.then(() => { 
 initThread();
 updateThread();
 
-/* ✎ EDIT: each project now supports a much fuller write-up for the
-   full-page popup:
-     - role / timeline / client / tools   → shown as a quick-facts row
-     - sections: [{label, text}, ...]      → as many write-up blocks as
-                                              you want (Overview, Problem,
-                                              Process, Outcome, Reflection...)
-     - process: [{src, caption}, ...]      → each process shot can now
-                                              carry its own caption
-   `body` is still used for the short hover-panel blurb on the tile
-   itself, so keep that short; put the long-form story in `sections`. */
+/* ✎ EDIT: each project now writes up three fixed boxes in the popup:
+     - goals / goalsImages             → why the project exists
+     - processText / processImages     → how it was made
+     - changeText / changeImages       → what you'd add or do differently
+   Any of these can be left out — the box just won't show. `body` is
+   still the short intro shown in full at the top of the popup (and
+   truncated in the hover-panel preview). `summary` is the punchy
+   one-line highlight shown right under it. */
 const projects = [
   {
     image: "homesearch.png",
@@ -1163,22 +1212,11 @@ const projects = [
     title: "RIT Reserve Section App",
     tags: ["UI/UX", "Branding"],
     summary: "Created a system based on a physical version",
-    body: "The Reserve Section is a very important section used by faculty to provide material for students. It is complex to use, which is why I took on app-ifying it to ease accessibilty for patrons.",
-    role: "UI/UX Designer",
-    timeline: "6 weeks",
-    client: "RIT Wallace Library",
-    tools: "Figma, Illustrator",
-    sections: [
-      { label: "Overview", text: "The Reserve Section is a heavily used part of the library that lets faculty put course material on hold for students to check out. The physical, paper-based version of this system was confusing for both the patrons requesting items and the staff managing them." },
-      { label: "The problem", text: "Patrons struggled to find what course material was available to them, staff had no easy way to log new reserve requests from faculty, and there was no shared source of truth between the two groups. Every interaction relied on someone remembering where things were." },
-      { label: "The process", text: "I mapped the existing paper workflow end-to-end, then rebuilt it as three linked flows: browsing/searching as a patron, adding a new item as faculty, and an overview view for staff to manage everything at once. Using RIT's own branding and color system kept the app feeling like an extension of the library rather than a bolted-on tool." },
-      { label: "Outcome", text: "The final app-ified system cut down the number of steps needed to place and retrieve a hold, and gave staff a single dashboard instead of a paper log. It's designed to fit both RIT's visual identity and the library's real day-to-day technological needs." }
-    ],
-    process: [
-      { src: "itempage.png", caption: "Item detail view — shows availability and hold status at a glance." },
-      { src: "addforfaculty.png", caption: "Faculty-facing flow for adding a new item to reserves." },
-      { src: "seeallpage.png", caption: "Staff overview page, replacing the old paper log." }
-    ]
+    body: "The Reserve Section is a very important section used by faculty to provide material for students. It is complex to use, which is why I took on app-ifying it to ease accessibilty for patrons. Using RIT's branding and colors it was designed to fit both their image as well as technological needs. ",
+    goals: "",
+    processText: "Using RIT's branding and colors it was designed to fit both their image as well as technological needs.",
+    processImages: ["itempage.png", "addforfaculty.png", "seeallpage.png"],
+    changeText: ""
   },
   {
     image: "medapp.png",
@@ -1186,20 +1224,11 @@ const projects = [
     title: "Digital IUD",
     tags: ["Identity", "UI"],
     summary: "App for doctors and patients connected to a E-IUD.",
-    body: "A connected app for doctors and patients paired with an E-IUD, designed around two very different sets of needs.",
-    role: "UI Designer",
-    timeline: "In progress",
-    client: "Concept project",
-    tools: "Figma",
-    sections: [
-      { label: "Overview", text: "A companion app for a next-generation, sensor-connected IUD, built as two linked experiences: one for the patient tracking their own body, and one for the doctor monitoring device data and patient history." },
-      { label: "The problem", text: "Reproductive health tools tend to either over-simplify (losing useful data) or over-medicalize (feeling cold and clinical). The goal was an interface that patients would actually want to open, while still giving doctors the clarity they need." },
-      { label: "The process", text: "I designed the patient and doctor views in parallel so their shared data — cycle history, device status, alerts — stayed visually consistent between the two, even though the tone of each view is different: warmer and more reassuring for the patient, denser and more data-forward for the doctor." }
-    ],
-    process: [
-      { src: "iuddoctor.png", caption: "Doctor-facing dashboard with device and patient history." },
-      { src: "iudpatient.png", caption: "Patient-facing home screen and cycle tracking." }
-    ]
+    body: "A restrained rebrand and motion identity for a ceramics studio — a wordmark that behaves like a kiln label, and a set of looping animations used across their site and reels.",
+    goals: "",
+    processText: "",
+    processImages: ["iuddoctor.png", "iudpatient.png"],
+    changeText: ""
   },
   {
     image: "hedonistmenuoutside.jpg",
@@ -1207,19 +1236,11 @@ const projects = [
     title: "Rebrand for a cafe",
     tags: ["Branding", "Illustration"],
     summary: "A menu and new look for a chocolate company that desired a sleek, mature look.",
-    body: "A menu and refreshed identity for a chocolate cafe wanting a sleeker, more mature look for its Easter catalogue.",
-    role: "Brand & Print Designer",
-    timeline: "3 weeks",
-    client: "Hedonist Chocolate",
-    tools: "Illustrator, Photoshop",
-    sections: [
-      { label: "Overview", text: "Hedonist wanted their seasonal Easter catalogue and everyday menu to feel less novelty-shop and more like a mature, considered chocolate house." },
-      { label: "The process", text: "I redesigned the logo mark and paired it with a new menu system built around their Easter catalogue, along with a matching letterhead so the print materials felt like one cohesive set rather than one-off pieces." }
-    ],
-    process: [
-      { src: "hedonistmenu.jpg", caption: "Final printed menu spread." },
-      { src: "hedonistletterhead.png", caption: "Companion letterhead using the same mark and type system." }
-    ]
+    body: "The rebrand features a new logo as well as a new menu based around their Easter catalogue.",
+    goals: "",
+    processText: "",
+    processImages: ["hedonistmenu.jpg", "hedonistletterhead.png"],
+    changeText: ""
   },
   {
     image: "P2FinalVisualCompOp2.png",
@@ -1227,20 +1248,11 @@ const projects = [
     title: "Drake Vs. Kendrick Game",
     tags: ["Product", "UI"],
     summary: "A game based on Drake and Kendrick Lamars beef",
-    body: "A browser game exploring Drake and Kendrick Lamar's public feud, framed around a fictional Rap Hall of Fame exhibit.",
-    role: "UI/Product Designer",
-    timeline: "4 weeks",
-    client: "Class project",
-    tools: "Illustrator, Figma",
-    sections: [
-      { label: "Overview", text: "A concept game built around the idea of the Drake/Kendrick feud being preserved as an exhibit at a (fictional) new Rap Hall of Fame planned for Brooklyn." },
-      { label: "The process", text: "Each scene is built as a pixel-art diorama — houses, diss tracks, and backstory — that the player clicks through like exhibit placards. I designed the visual comps first to lock the tone, then built out the individual pixel assets (houses, character sprites) to match." }
-    ],
-    process: [
-      { src: "P2FinalVisualCompD2.png", caption: "Second visual comp, refining the exhibit layout." },
-      { src: "pixelhouse.png", caption: "Pixel-art house asset used in one of the scenes." },
-      { src: "pixeldrake.png", caption: "Character sprite work." }
-    ]
+    body: "A game made to explore Drake and Kendricks public beef, centered around the idea of being displayed at the new Rap Hall of Fame planned for Brookyln. Scenes show their houses, diss tracks, background, etc.",
+    goals: "",
+    processText: "Scenes show their houses, diss tracks, background, etc.",
+    processImages: ["P2FinalVisualCompD2.png", "pixelhouse.png", "pixeldrake.png"],
+    changeText: ""
   }
 ];
 
@@ -1263,6 +1275,20 @@ function openInfo(data, gallery){
   document.getElementById("infoTitle").textContent = data.title;
   document.getElementById("infoTags").innerHTML = (data.tags || []).map(t => `<span>${t}</span>`).join("");
 
+  // the brief, shown in FULL here (it's truncated to two lines in the
+  // hover/tap preview, but the popup is where the whole thing lives)
+  document.getElementById("infoIntro").textContent = data.body || "";
+
+  // punchy one-line takeaway — projects carry this as `summary`; only
+  // shown when provided, so reels without one just skip it
+  const highlight = document.getElementById("infoHighlight");
+  if (data.summary){
+    highlight.textContent = data.summary;
+    highlight.style.display = "block";
+  } else {
+    highlight.style.display = "none";
+  }
+
   // quick-facts row — role / timeline / client / tools, only shown when provided
   const metaRow = document.getElementById("infoMetaRow");
   const metaFields = [
@@ -1272,69 +1298,28 @@ function openInfo(data, gallery){
   metaRow.innerHTML = metaFields.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
   metaRow.style.display = metaFields.length ? "grid" : "none";
 
-  // big cover image up top — falls back to the tile's own thumbnail
-  const cover = document.getElementById("infoCover");
+  // small tilted cover photo beside the intro, magazine-stack style —
+  // falls back to the tile's own thumbnail; hidden entirely if neither exists
+  const heroImage = document.getElementById("infoHeroImage");
   const coverSrc = data.cover || data.image;
-  cover.innerHTML = "";
+  heroImage.innerHTML = "";
   if (coverSrc){
-    cover.style.display = "block";
+    heroImage.style.display = "block";
     const img = document.createElement("img");
     img.src = coverSrc; img.alt = data.title || "";
-    img.onerror = () => {
-      const ph = document.createElement("div");
-      ph.className = "placeholder";
-      ph.textContent = coverSrc;
-      img.replaceWith(ph);
-    };
-    cover.appendChild(img);
+    img.addEventListener("click", () => openLightbox(coverSrc, data.title || ""));
+    img.onerror = () => { heroImage.style.display = "none"; };
+    heroImage.appendChild(img);
   } else {
-    cover.style.display = "none";
+    heroImage.style.display = "none";
   }
 
-  // write-up: use `sections` if provided (Overview / Problem / Process /
-  // Outcome, etc.), otherwise fall back to the single short `body` blurb
-  const sections = (data.sections && data.sections.length) ? data.sections : (data.body ? [{ label: "Overview", text: data.body }] : []);
-  document.getElementById("infoToc").innerHTML = sections.map(s => {
-    const teaser = s.text.length > 78 ? s.text.slice(0, 78).trim() + "…" : s.text;
-    return `<div class="info-toc-item"><b>${s.label}</b>${teaser}</div>`;
-  }).join("");
-  document.getElementById("infoBodyCol").innerHTML = sections.map(s => `
-    <div class="info-block">
-      <p class="info-block-label">${s.label}</p>
-      <p class="info-body">${s.text}</p>
-    </div>
-  `).join("");
-
-  // process gallery — each shot can carry its own caption now
-  const label = document.getElementById("infoProcessLabel");
-  const grid = document.getElementById("infoProcess");
-  grid.innerHTML = "";
-  const processItems = data.process || [];
-  if (processItems.length){
-    label.style.display = "block";
-    processItems.forEach((entry) => {
-      const src = typeof entry === "string" ? entry : entry.src;
-      const caption = typeof entry === "string" ? "" : (entry.caption || "");
-      const fig = document.createElement("figure");
-      const img = document.createElement("img");
-      img.src = src; img.alt = caption || "";
-      img.onerror = () => {
-        const ph = document.createElement("div");
-        ph.className = "placeholder";
-        ph.textContent = src;
-        img.replaceWith(ph);
-      };
-      fig.appendChild(img);
-      if (caption){
-        const cap = document.createElement("figcaption");
-        cap.textContent = caption;
-        fig.appendChild(cap);
-      }
-      grid.appendChild(fig);
-    });
-  } else {
-    label.style.display = "none";
-  }
+  // three fixed boxes — Goals / Process / What I'd add or change — each
+  // with its own optional little photo grid right underneath. A box is
+  // hidden entirely when the project has neither text nor images for it.
+  fillInfoBlock("infoGoalsBlock", "infoGoalsText", "infoGoalsImages", data.goals, data.goalsImages);
+  fillInfoBlock("infoProcessBlock", "infoProcessText", "infoProcessImages", data.processText, data.processImages);
+  fillInfoBlock("infoChangeBlock", "infoChangeText", "infoChangeImages", data.changeText, data.changeImages);
 
   // prev/next footer — steps to the neighboring item in whichever
   // gallery (Work or Reel) this popup was opened from
@@ -1348,12 +1333,43 @@ function openInfo(data, gallery){
   document.body.style.overflow = "hidden";
   infoOverlay.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
 }
+
+// fills one of the three fixed write-up boxes (text + its own photo
+// grid) and hides the whole box when there's nothing to show for it
+function fillInfoBlock(blockId, textId, imagesId, text, images){
+  const block = document.getElementById(blockId);
+  const textEl = document.getElementById(textId);
+  const imagesEl = document.getElementById(imagesId);
+  textEl.textContent = text || "";
+  textEl.style.display = text ? "block" : "none";
+  imagesEl.innerHTML = "";
+  const items = images || [];
+  items.forEach((entry) => {
+    const src = typeof entry === "string" ? entry : entry.src;
+    const caption = typeof entry === "string" ? "" : (entry.caption || "");
+    const img = document.createElement("img");
+    img.src = src; img.alt = caption || "";
+    img.addEventListener("click", () => openLightbox(src, caption));
+    img.onerror = () => {
+      const ph = document.createElement("div");
+      ph.className = "placeholder";
+      ph.textContent = src;
+      img.replaceWith(ph);
+    };
+    imagesEl.appendChild(img);
+  });
+  block.style.display = (text || items.length) ? "block" : "none";
+}
+
 function closeInfo(){
   infoOverlay.classList.remove("open");
   document.body.style.overflow = "";
 }
 document.getElementById("infoClose").addEventListener("click", closeInfo);
-document.addEventListener("keydown", (e) => { if (e.key === "Escape" && infoOverlay.classList.contains("open")) closeInfo(); });
+infoOverlay.querySelector(".info-overlay-bg").addEventListener("click", closeInfo);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && infoOverlay.classList.contains("open")) closeInfo();
+});
 document.getElementById("infoPrev").addEventListener("click", () => {
   if (!infoGallery.length) return;
   infoIndex = (infoIndex - 1 + infoGallery.length) % infoGallery.length;
@@ -1364,6 +1380,28 @@ document.getElementById("infoNext").addEventListener("click", () => {
   infoIndex = (infoIndex + 1) % infoGallery.length;
   openInfo(infoGallery[infoIndex], infoGallery);
 });
+
+/* =========================================================
+   IMAGE LIGHTBOX — click any photo inside the info popup (the
+   tilted cover shot or a section's own little photos) to view it
+   full-size, layered above the popup.
+   ========================================================= */
+const imgLightbox = document.getElementById("imgLightbox");
+const imgLightboxImg = document.getElementById("imgLightboxImg");
+function openLightbox(src, alt){
+  imgLightboxImg.src = src;
+  imgLightboxImg.alt = alt || "";
+  imgLightbox.classList.add("open");
+}
+function closeLightbox(){
+  imgLightbox.classList.remove("open");
+}
+document.getElementById("imgLightboxClose").addEventListener("click", closeLightbox);
+imgLightbox.querySelector(".img-lightbox-bg").addEventListener("click", closeLightbox);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && imgLightbox.classList.contains("open")) closeLightbox();
+});
+
 
 const strip = document.getElementById("workStrip");
 projects.forEach((p) => {
@@ -1443,46 +1481,31 @@ const reels = [
     video: "javasfinalhoriz.mp4",
     title: "Javas — Brand Film",
     tags: ["Motion", "Brand"],
-    body: "A short brand film built around Javas identity — type-driven titles and a warm grade.",
-    role: "Motion Designer",
-    timeline: "2 weeks",
-    client: "Javas",
-    tools: "After Effects",
-    sections: [
-      { label: "Overview", text: "A short brand film built around Javas' identity — type-driven titles, a warm grade, and a loop that works equally well as a site header and a social cutdown." },
-      { label: "The process", text: "I started from the static brand assets (the coffee-cup illustration, the matcha color palette) and built out motion studies for each before combining them into one continuous loop." }
-    ],
-    process: [
-      { src: "coffethangs-04.png", caption: "Coffee-cup illustration used as a recurring motif." },
-      { src: "javasbuild.png", caption: "Build-up frame from the animation timeline." },
-      { src: "matcha.png", caption: "Matcha color-study frame." }
-    ]
+    body: "A short brand film built around Javas identity — type-driven titles, a warm grade, and a loop that works equally well as a site header and a social cutdown.",
+    goals: "",
+    processText: "",
+    processImages: ["coffethangs-04.png", "javasbuild.png", "matcha.png"],
+    changeText: ""
   },
   {
     video: "tacobell.mp4",
     title: "Taco Bell Brand Demo",
     tags: ["Motion", "Brand"],
-    body: "A brand motion demo exploring a bold, high-energy direction for Taco Bell.",
-    role: "Motion Designer",
-    timeline: "1 week",
-    client: "Concept project",
-    tools: "After Effects",
-    sections: [
-      { label: "Overview", text: "A brand demo reel exploring a bold, high-energy motion direction — fast cuts and saturated color meant to match the brand's existing tone." }
-    ]
+    body: "A screen-capture walkthrough of the Northbound editorial site, showing the scroll-triggered photo essays and the transitions between issues.",
+    goals: "",
+    processText: "",
+    processImages: [],
+    changeText: ""
   },
   {
     video: "armani.mp4",
     title: "Armani Brand Demo",
     tags: ["Motion", "Brand"],
-    body: "A quieter, more editorial motion demo for Armani, leaning on restraint and negative space.",
-    role: "Motion Designer",
-    timeline: "1 week",
-    client: "Concept project",
-    tools: "After Effects",
-    sections: [
-      { label: "Overview", text: "In contrast to a louder brand, this demo leans on restraint — slow pacing, generous negative space, and minimal type — to match a more editorial, luxury tone." }
-    ]
+    body: "A quick product demo covering the core Fieldnote flow — capturing a note, tagging it, and syncing across devices.",
+    goals: "",
+    processText: "",
+    processImages: [],
+    changeText: ""
   }
 ];
 
