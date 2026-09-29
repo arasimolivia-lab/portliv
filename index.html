@@ -1023,7 +1023,7 @@
           <path d="M9 18l2 4 2-4" fill="var(--neon)" stroke="var(--neon)"/>
         </g>
       </svg>
-      <span>Draw your own web here</span>
+      <span>Draw your own thing here</span>
       <button class="web-canvas-clear" id="webCanvasClear" type="button">clear</button>
     </div>
     <!-- ✎ EDIT: sticker spot — draggable, tap for a little pop -->
@@ -1657,10 +1657,10 @@ const reels = [
           showBubble(el, "Woof!", 900);
         } else if (el.classList.contains("mascot-burger")) {
           wiggle(el);
-          showBubble(el, "Hover an image to see its details. Click the arrows or scroll to see more.", 3200);
+          showBubble(el, "Hover on an image to see brief details, and click for a full breakdown. Click the arrows or scroll to see more projects.", 3200);
         } else if (el.classList.contains("mascot-star")) {
           wiggle(el);
-          showBubble(el, "Hover a video for details. Click it to play, or use the arrows to slide.", 3200);
+          showBubble(el, "Hover on a video to see brief details, and click for the full video on the preview box, click on the pink box for the full brief. Click the arrows or scroll to see more projects.", 3200);
         } else if (!el.classList.contains("sticker-mascot")) {
           el.classList.add("popped");
           el.addEventListener("animationend", () => el.classList.remove("popped"), { once: true });
